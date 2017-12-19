@@ -4,11 +4,12 @@
 
 "use strict";
 
-var express = require('express'),
-    router = express.Router(),
-    flavorController = require('../controllers/flavor_controller');
+let express = require('express'),
+    flavorCtrl = require('../controllers/flavor_controller');
+
+const router = express.Router(); // eslint-disable-line new-cap
 
 //get all flavors
-router.get('/', flavorController.getAll);
+router.get('/', flavorCtrl.getAll);
 
 module.exports = router;

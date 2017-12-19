@@ -1,25 +1,28 @@
 "use strict";
 
-var express = require('express'),
-    router = express.Router(),
-    nutrientController = require('../controllers/nutrient_controller');
+let express = require('express'),
+    nutrientCtrl = require('../controllers/nutrient_controller');
 
-//create a nutrient
-router.post('/', nutrientController.createNutrient);
+const router = express.Router(); // eslint-disable-line new-cap
 
-//update a nutrient
-router.put('/:nutrient_id', nutrientController.updateNutrient);
-    
-//retrieve one nutrient
-router.get('/:nutrient_id', nutrientController.getNutrient);
+router.route('/')
+    /** GET /api/nutrients - Get list of nutrients */
+    .get(nutrientCtrl.getAll)
 
-//delete a nutrient
-router.delete('/:nutrient_id', nutrientController.deleteNutrient);
+    /** POST /api/nutrients - Create new nutrient */
+    .post(nutrientCtrl.createNutrient);
 
-//get all nutrients
-router.get('/', nutrientController.getAll);
+router.route('/:plant_id')
+    /** GET /api/nutrients/:nutrientId - Get nutrient */
+    .get(nutrientCtrl.getAll)
 
-//get nutrients for one user
-router.get('/user/:username', nutrientController.getNutrientsByUserName);
+    /** PUT /api/nutrients/:nutrientId - Update nutrient */
+    .put(nutrientCtrl.updateNutrient)
+
+    /** DELETE /api/nutrients/:nutrientId - Delete nutrient */
+    .delete(nutrientCtrl.deleteNutrient);
+
+/** GET /api/nutrients/user/:username - Get list of nutrients by username */
+router.route('/user/:username').get(nutrientCtrl.getNutrientsByUserName);
 
 module.exports = router;

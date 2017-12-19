@@ -4,14 +4,15 @@
 
 "use strict";
 
-var express = require('express'),
-    router = express.Router(),
-    attributeController = require('../controllers/attribute_controller');
+let express = require('express'),
+    attributeCtrl = require('../controllers/attribute_controller');
+
+const router = express.Router(); // eslint-disable-line new-cap
 
 //get all attributes
-router.get('/', attributeController.getAll);
+router.get('/', attributeCtrl.getAll);
 
 //get mock attributes
-router.get('/mock', attributeController.getAttributesMock);
+router.get('/mock', attributeCtrl.getAttributesMock);
 
 module.exports = router;

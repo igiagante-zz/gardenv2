@@ -4,12 +4,12 @@
 
 "use strict";
 
-var Measure = require('../models/measure'),
+let Measure = require('../models/measure'),
     async = require('async'),
     request = require('request'),
     moment = require('moment');
 
-var processSensor = function(measure, callback){
+let processSensor = function(measure, callback){
 
     Measure.create({
         measureDate: measure.measureDate,
@@ -24,7 +24,7 @@ var processSensor = function(measure, callback){
     });
 };
 
-var processData = function(measures, callback){
+let processData = function(measures, callback){
 
     async.each(measures, processSensor, function(err){
         if (err) {
@@ -35,7 +35,7 @@ var processData = function(measures, callback){
 };
 
 //return all the measures done by one sensor
-var getSensorMeasures = function(sensorId, callback) {
+let getSensorMeasures = function(sensorId, callback) {
 
     Measure.find({ "sensorId" : sensorId }, function(error, measures){
         if(error) {
@@ -45,29 +45,29 @@ var getSensorMeasures = function(sensorId, callback) {
     });
 };
 
-var getTemperatureAndHumidity = function(callback) {
+let getTemperatureAndHumidity = function(callback) {
 
-    var url = "http://api.openweathermap.org/data/2.5/forecast/daily?q=Cordoba&units=metric&cnt=16&appid=ee6b949a571893998b4424956aca7d97";
+    let url = "http://api.openweathermap.org/data/2.5/forecast/daily?q=Cordoba&units=metric&cnt=16&appid=ee6b949a571893998b4424956aca7d97";
 
     request(url, function(error, response, body) {
         if (!error && response.statusCode == 200) {
 
-            var bodyJson = JSON.parse(body);
-            var days = bodyJson.list;
-            var temps = [];
+            let bodyJson = JSON.parse(body);
+            let days = bodyJson.list;
+            let temps = [];
 
             if(days) {
 
-                for (var i = 0; i < days.length; i++) {
+                for (let i = 0; i < days.length; i++) {
 
-                    var date = new Date(days[i].dt * 1000);
-                    var humidity = days[i].humidity;
+                    let date = new Date(days[i].dt * 1000);
+                    let humidity = days[i].humidity;
 
                     if(humidity == 0) {
                         humidity = _getRandomHumidity();
                     }
 
-                    var temp = {
+                    let temp = {
                         "date": date,
                         "temp": days[i].temp.day,
                         "humidity" : humidity
@@ -82,31 +82,31 @@ var getTemperatureAndHumidity = function(callback) {
     });
 };
 
-var _getRandomHumidity = function() {
-    var low = 30;
-    var high = 70;
+let _getRandomHumidity = function() {
+    let low = 30;
+    let high = 70;
     return Math.floor(Math.random() * (high - low + 1) + low);
 };
 
-var getActualTempAndHumidity = function (callback) {
+let getActualTempAndHumidity = function (callback) {
 
-    var url = "http://api.openweathermap.org/data/2.5/forecast/daily?q=Cordoba&units=metric&cnt=1&appid=ee6b949a571893998b4424956aca7d97";
+    let url = "http://api.openweathermap.org/data/2.5/forecast/daily?q=Cordoba&units=metric&cnt=1&appid=ee6b949a571893998b4424956aca7d97";
 
     request(url, function(error, response, body) {
         if (!error && response.statusCode == 200) {
 
-            var bodyJson = JSON.parse(body);
-            var days = bodyJson.list;
+            let bodyJson = JSON.parse(body);
+            let days = bodyJson.list;
 
-            var date = new Date(days[0].dt * 1000);
+            let date = new Date(days[0].dt * 1000);
             var temp = days[0].temp.day;
             var humidity = days[0].humidity;
 
-            if(humidity == 0) {
+            if(humidity === 0) {
                 humidity = _getRandomHumidity();
             }
 
-            var temp = {
+            temp = {
                 "date": date,
                 "temp": temp,
                 "humidity" : humidity

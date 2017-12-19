@@ -2,7 +2,7 @@
 
 var Irrigation = require('../models/irrigation'),
     Dose = require('../models/dose'),
-    utilObject = require('../commons/util_object'),
+    utilObject = require('../helpers/util_object'),
     logger = require('../utils/logger'),
     irrigationService = require('../services/irrigation_service');
 

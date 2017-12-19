@@ -3,8 +3,8 @@
  */
 
 var Flavor = require('../models/flavor'),
-    utilObject = require('../commons/util_object'),
-    utilImage = require('../commons/util_image');
+    utilObject = require('../helpers/util_object'),
+    utilImage = require('../helpers/util_image');
 
 /**
  * Get all the flavors

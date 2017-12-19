@@ -4,11 +4,11 @@
 
 "use strict";
 
-var Irrigation = require('../models/irrigation'),
+let Irrigation = require('../models/irrigation'),
     Dose = require('../models/dose'),
     async = require('async'),
     logger = require('../utils/logger'),
-    utilObject = require('../commons/util_object'),
+    utilObject = require('../helpers/util_object'),
     doseService = require('./dose_service'),
     Nutrient = require('../models/nutrient');
 
@@ -18,16 +18,16 @@ var Irrigation = require('../models/irrigation'),
  * @param gardenId
  * @param callback
  */
-var getIrrigationsByGardenId = function(gardenId, callback) {
+let getIrrigationsByGardenId = function(gardenId, callback) {
 
-    var filterIrrigations = [];
+    let filterIrrigations = [];
 
     Irrigation.find(function (err, irrigations) {
         if (err) {
             return callback(err);
         }
 
-        for(var i = 0; i < irrigations.length; i++){
+        for(let i = 0; i < irrigations.length; i++){
             if(irrigations[i]._doc.gardenId.equals(gardenId)) {
                 filterIrrigations.push(irrigations[i]);
             }
@@ -52,18 +52,18 @@ var getIrrigationsByGardenId = function(gardenId, callback) {
  * @param toDate
  * @param callback
  */
-var getIrrigations = function(garden_id, fromDate, toDate, callback) {
+let getIrrigations = function(garden_id, fromDate, toDate, callback) {
 
     logger.debug('Get all the irrigations for one garden');
 
-    var irrigationsOut = [];
+    let irrigationsOut = [];
 
     Irrigation.find({ "gardenId" : garden_id}, function(err, irrigations){
         if(err) {
             callback(err);
         }
 
-        for (var i = 0; i < irrigations.length; i++) {
+        for (let i = 0; i < irrigations.length; i++) {
             irrigationsOut.push({
                     _id: irrigations[i]._id,
                     irrigationDate: irrigations[i].irrigationDate,
@@ -82,9 +82,9 @@ var getIrrigations = function(garden_id, fromDate, toDate, callback) {
  * @param doses_Id
  * @param callback
  */
-var readDose = function(doses_Id, callback){
+let readDose = function(doses_Id, callback){
 
-    var doseOut = {};
+    let doseOut = {};
 
     Dose.find({ "doseId" : doses_Id}, function(err, dose){
         if(err) {
@@ -106,13 +106,13 @@ var readDose = function(doses_Id, callback){
  * @param irrigations
  * @param callback
  */
-var getDoses = function(irrigations, callback) {
+let getDoses = function(irrigations, callback) {
 
     logger.debug('Get all the doses from irrigations');
 
-    var dosesIds = [];
+    let dosesIds = [];
 
-    for (var i = 0; i < irrigations.length; i++) {
+    for (let i = 0; i < irrigations.length; i++) {
         dosesIds.push(irrigations[i].doseId);
     }
 
@@ -129,13 +129,13 @@ var getDoses = function(irrigations, callback) {
  * @param doses
  * @param callback
  */
-var getNutrientsFromDoses = function(doses, callback) {
+let getNutrientsFromDoses = function(doses, callback) {
 
     logger.debug('Get the nutrients from each dose');
 
-    var nutrients = [];
+    let nutrients = [];
 
-    for (var i = 0; i < doses.length; i++) {
+    for (let i = 0; i < doses.length; i++) {
         nutrients.push(doses[i].nutrients);
     }
 
@@ -147,12 +147,12 @@ var getNutrientsFromDoses = function(doses, callback) {
  * @param nutrients
  * @param callback
  */
-var getNutrientsTotal = function(nutrients, callback) {
+let getNutrientsTotal = function(nutrients, callback) {
 
     logger.debug('Get nutrients info');
 
     //only nutrient info
-    var nutrientsOut = [];
+    let nutrientsOut = [];
 
     Nutrient.find(function(err, nutrients) {
         if (err) {
@@ -161,10 +161,10 @@ var getNutrientsTotal = function(nutrients, callback) {
         nutrientsOut = nutrients;
     });
 
-    var mapOfNutrients = []; // create an empty array
+    let mapOfNutrients = []; // create an empty array
 
     //init nutrients map
-    for (var a = 0; a < nutrientsOut.length; i++) {
+    for (let i = 0; i < nutrientsOut.length; i++) {
         mapOfNutrients.push({
             key: nutrientsOut[a].name,
             value: 0
@@ -172,8 +172,8 @@ var getNutrientsTotal = function(nutrients, callback) {
     }
 
     //accumulate use of each nutrient
-    for (var i = 0; i < nutrients.length; i++) {
-        for (var j = 0; j < nutrientsOut.length; j++) {
+    for (let i = 0; i < nutrients.length; i++) {
+        for (let j = 0; j < nutrientsOut.length; j++) {
             if(nutrients[i].name === nutrients[j].name) {
                 mapOfNutrients[nutrients[i].name] += nutrients[i].quantityUsed;
             }
@@ -191,9 +191,9 @@ var getNutrientsTotal = function(nutrients, callback) {
  * @param toDate
  * @param mainCallback
  */
-var calculateUseOfNutrients = function(gardenId, fromDate, toDate, mainCallback) {
+let calculateUseOfNutrients = function(gardenId, fromDate, toDate, mainCallback) {
 
-    var flow = {
+    let flow = {
 
         getIrrigations: async.apply(getIrrigations, gardenId, fromDate, toDate),
 

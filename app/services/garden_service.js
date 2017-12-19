@@ -4,11 +4,10 @@
 
 'use strict';
 
-var plantService = require('./plant_service'),
+let plantService = require('./plant_service'),
     irrigationService = require('./irrigation_service'),
     Garden = require('../models/garden'),
-    utilObject = require('../commons/util_object'),
-    plantService = require('../../app/services/plant_service'),
+    utilObject = require('../helpers/util_object'),
     async = require('async');
 
 /**
@@ -16,7 +15,7 @@ var plantService = require('./plant_service'),
  * @param gardens List of gardens
  * @param addPlantsToGardensCallback
  */
-var addPlantsToGardens = function (gardens, addPlantsToGardensCallback) {
+let addPlantsToGardens = function (gardens, addPlantsToGardensCallback) {
 
     addPlants(gardens, function (err) {
         if (err) {
@@ -31,7 +30,7 @@ var addPlantsToGardens = function (gardens, addPlantsToGardensCallback) {
  * @param gardens
  * @param addPlantsCallback
  */
-var addPlants = function (gardens, addPlantsCallback) {
+let addPlants = function (gardens, addPlantsCallback) {
 
     async.each(gardens, function (garden, callback) {
 
@@ -45,7 +44,7 @@ var addPlants = function (gardens, addPlantsCallback) {
     });
 };
 
-var addPlantsToOneGarden = function (garden, addPlantsToOneGardenCallback) {
+let addPlantsToOneGarden = function (garden, addPlantsToOneGardenCallback) {
     plantService.getPlantsByGardenId(garden._doc.id, function (err, plants) {
         if (err) {
             return addPlantsToOneGardenCallback(err);
@@ -62,7 +61,7 @@ var addPlantsToOneGarden = function (garden, addPlantsToOneGardenCallback) {
  * @param gardens
  * @param getGardensWithPlantsCallback
  */
-var addIrrigationsToGardens = function (gardens, addIrrigationsToGardensCallback) {
+let addIrrigationsToGardens = function (gardens, addIrrigationsToGardensCallback) {
 
     addIrrigationsToGarden(gardens, function (err) {
         if (err) {
@@ -77,7 +76,7 @@ var addIrrigationsToGardens = function (gardens, addIrrigationsToGardensCallback
  * @param gardens
  * @param addIrrigationsCallback
  */
-var addIrrigationsToGarden = function (gardens, addIrrigationsCallback) {
+let addIrrigationsToGarden = function (gardens, addIrrigationsCallback) {
 
     async.each(gardens, function (garden, callback) {
 
@@ -91,7 +90,7 @@ var addIrrigationsToGarden = function (gardens, addIrrigationsCallback) {
     });
 };
 
-var addIrrigationsToOneGarden = function (garden, addIrrigationsToOneGardenCallback) {
+let addIrrigationsToOneGarden = function (garden, addIrrigationsToOneGardenCallback) {
     irrigationService.getIrrigationsByGardenId(garden._doc.id, function (err, irrigations) {
         if (err) {
             return addIrrigationsToOneGardenCallback(err);
@@ -106,9 +105,9 @@ var addIrrigationsToOneGarden = function (garden, addIrrigationsToOneGardenCallb
  * @param gardensIds Embedded Documents which contain garden's ids
  * @param getGardensDataCallback
  */
-var getGardensData = function (gardensIds, getGardensDataCallback) {
+let getGardensData = function (gardensIds, getGardensDataCallback) {
 
-    var gardens = [];
+    let gardens = [];
 
     async.each(gardensIds, function (gardenId, callback) {
 
@@ -147,7 +146,7 @@ var getGardensData = function (gardensIds, getGardensDataCallback) {
     });
 };
 
-var findGardenByName = function (gardenName, findGardenByNameCallback) {
+let findGardenByName = function (gardenName, findGardenByNameCallback) {
     Garden.findOne({name: gardenName}, function (err, garden) {
         if (err) {
             return findGardenByNameCallback(err);
@@ -161,7 +160,7 @@ var findGardenByName = function (gardenName, findGardenByNameCallback) {
  * @param gardenId
  * * @param getGardenCallback
  */
-var getGarden = function (gardenId, getGardenCallback) {
+let getGarden = function (gardenId, getGardenCallback) {
 
     Garden.findById(gardenId, function (err, garden) {
         if (err) {

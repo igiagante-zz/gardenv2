@@ -3,98 +3,98 @@
  */
 
 
-var getAttributesData = function (getAttributesDataCallback) {
+let getAttributesData = function (getAttributesDataCallback) {
 
-    var attrs = [];
+    let attrs = [];
 
     // Effects
-    var attr1 = {
+    let attr1 = {
         name : 'euphoric',
         type : 'effects',
         percentage : 80
     };
 
-    var attr2 = {
+    let attr2 = {
         name : 'relaxed',
         type : 'effects',
         percentage : 70
     };
 
-    var attr3 = {
+    let attr3 = {
         name : 'happy',
         type : 'effects',
         percentage : 60
     };
 
-    var attr4 = {
+    let attr4 = {
         name : 'uplifted',
         type : 'effects',
         percentage : 50
     };
 
-    var attr5 = {
+    let attr5 = {
         name : 'focused',
         type : 'effects',
         percentage : 40
     };
 
     // Medicinal
-    var attr6 = {
+    let attr6 = {
         name : 'stress',
         type : 'medicinal',
         percentage : 80
     };
 
-    var attr7 = {
+    let attr7 = {
         name : 'depression',
         type : 'medicinal',
         percentage : 70
     };
 
-    var attr8 = {
+    let attr8 = {
         name : 'lack of appetite',
         type : 'medicinal',
         percentage : 60
     };
 
-    var attr9 = {
+    let attr9 = {
         name : 'nausea',
         type : 'medicinal',
         percentage : 50
     };
 
-    var attr10 = {
+    let attr10 = {
         name : 'pain',
         type : 'medicinal',
         percentage : 40
     };
 
     // Symptoms
-    var attr11 = {
+    let attr11 = {
         name : 'sleepy',
         type : 'symptoms',
         percentage : 80
     };
 
-    var attr12 = {
+    let attr12 = {
         name : 'headache',
         type : 'symptoms',
         percentage : 70
     };
 
-    var attr13 = {
+    let attr13 = {
         name : 'muscle spams',
         type : 'symptoms',
         percentage : 60
     };
 
-    var attr14 = {
+    let attr14 = {
         name : 'insomnia',
         type : 'symptoms',
         percentage : 50
     };
 
-    var attr15 = {
+    let attr15 = {
         name : 'migraine',
         type : 'symptoms',
         percentage : 40

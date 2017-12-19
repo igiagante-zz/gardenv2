@@ -4,8 +4,8 @@
 
 "use strict";
 
-var Nutrient = require('../models/nutrient'),
-    utilObject = require('../commons/util_object'),
+let Nutrient = require('../models/nutrient'),
+    utilObject = require('../helpers/util_object'),
     async = require('async'),
     logger = require('../utils/logger');
 
@@ -14,7 +14,7 @@ var Nutrient = require('../models/nutrient'),
  * @param name Nutrient's Name
  * @param getNutrientCallback
  */
-var getNutrientInfoByName = function (name, getNutrientCallback) {
+let getNutrientInfoByName = function (name, getNutrientCallback) {
 
     Nutrient.find({"name": name}, function (error, nutrient) {
         if (error) {
@@ -31,20 +31,20 @@ var getNutrientInfoByName = function (name, getNutrientCallback) {
  * @param callback
  * @returns {Array} Represent resources ids images
  */
-var getResourcesIdsImagesForNutrient = function (nutrient, callback) {
+let getResourcesIdsImagesForNutrient = function (nutrient, callback) {
 
     logger.debug(' Getting resources ids images from model ');
 
-    var resourcesIds = [];
+    let resourcesIds = [];
 
     if (nutrient === null) {
         return callback('The nutrient is undefined');
     }
 
-    var nutrientParsed = JSON.parse(JSON.stringify(nutrient));
+    let nutrientParsed = JSON.parse(JSON.stringify(nutrient));
 
     if (nutrientParsed && nutrientParsed.images) {
-        for (var i = 0; i < nutrientParsed.images.length; i++) {
+        for (let i = 0; i < nutrientParsed.images.length; i++) {
             resourcesIds.push(nutrientParsed.images[i].id);
         }
     }
@@ -58,7 +58,7 @@ var getResourcesIdsImagesForNutrient = function (nutrient, callback) {
  * @param name
  * @param getNutrientIdCallback
  */
-var getNutrientId = function (name, getNutrientIdCallback) {
+let getNutrientId = function (name, getNutrientIdCallback) {
     Nutrient.findOne({name: name}, function (err, nutrient) {
         if (err) {
             return getNutrientIdCallback(err);
@@ -74,7 +74,7 @@ var getNutrientId = function (name, getNutrientIdCallback) {
  * @param nutrients Nutrient List
  * @param convertIdsFromMongoCallback
  */
-var convertIdsFromMongo = function (nutrients, convertIdsFromMongoCallback) {
+let convertIdsFromMongo = function (nutrients, convertIdsFromMongoCallback) {
 
     async.each(nutrients, function (nutrient, callback) {
         utilObject.convertItemsId(nutrient.images, callback);
@@ -87,7 +87,7 @@ var convertIdsFromMongo = function (nutrients, convertIdsFromMongoCallback) {
 };
 
 
-var convertChildrenIds = function (nutrient, convertChildrenIdsCallback) {
+let convertChildrenIds = function (nutrient, convertChildrenIdsCallback) {
     utilObject.convertItemsId(nutrient.images, function () {
         convertChildrenIdsCallback(undefined, nutrient);
     });
@@ -98,7 +98,7 @@ var convertChildrenIds = function (nutrient, convertChildrenIdsCallback) {
  * @param nutrient
  * @param getNutrientCallback
  */
-var getNutrient = function (nutrient, getNutrientCallback) {
+let getNutrient = function (nutrient, getNutrientCallback) {
 
     async.waterfall([
 
@@ -122,7 +122,7 @@ var getNutrient = function (nutrient, getNutrientCallback) {
     });
 };
 
-var getNutrientsByUserId = function (userId, getNutrientsByUserIdCallback) {
+let getNutrientsByUserId = function (userId, getNutrientsByUserIdCallback) {
 
     Nutrient.find({userId: userId}, function (err, nutrients) {
         if (err) {
@@ -143,7 +143,7 @@ var getNutrientsByUserId = function (userId, getNutrientsByUserIdCallback) {
  * @param nutrients
  * @param callbackNutrients
  */
-var convertImagesIdsFromNutrients = function (nutrients, callbackNutrients) {
+let convertImagesIdsFromNutrients = function (nutrients, callbackNutrients) {
 
     async.each(nutrients, function (nutrient, callback) {
         utilObject.convertItemsId(nutrient.images, callback);

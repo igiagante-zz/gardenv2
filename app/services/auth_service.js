@@ -2,13 +2,13 @@
  * Created by igiagante on 29/7/16.
  */
 
-var jwt = require('jwt-simple'),
-    auth = require('../../config/auth'),
+let jwt = require('jwt-simple'),
+    config = require('../../config/config'),
     User = require('../models/user');
 
-var isUserAuthenticated = function (token, isUserAuthenticatedCallback) {
+let isUserAuthenticated = function (token, isUserAuthenticatedCallback) {
 
-    var payload = jwt.decode(token, auth.secret);
+    let payload = jwt.decode(token, config.jwtSecret);
 
     User.findOne({
         _id: payload.sub
@@ -21,6 +21,4 @@ var isUserAuthenticated = function (token, isUserAuthenticatedCallback) {
     });
 };
 
-module.exports = {
-    isUserAuthenticated: isUserAuthenticated
-};
+module.exports = { isUserAuthenticated };

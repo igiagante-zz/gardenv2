@@ -4,7 +4,7 @@ var Garden = require('../models/garden'),
     User = require('../models/user'),
     userService = require('../services/user_service'),
     logger = require('../utils/logger'),
-    utilObject = require('../commons/util_object'),
+    utilObject = require('../helpers/util_object'),
     gardenService = require('../../app/services/garden_service');
 
 var userNotFound = 'USER_NOT_FOUND';

@@ -5,7 +5,7 @@
 
 var Attribute = require('../models/attribute'),
     attributeService = require('../services/attributes_service'),
-    utilObject = require('../commons/util_object');
+    utilObject = require('../helpers/util_object');
 
 /**
  * Get all the attributes

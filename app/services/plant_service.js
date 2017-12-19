@@ -1,8 +1,8 @@
 "use strict";
 
-var Plant = require('../models/plant'),
+let Plant = require('../models/plant'),
     logger = require('../utils/logger'),
-    utilObject = require('../commons/util_object'),
+    utilObject = require('../helpers/util_object'),
     async = require('async');
 
 /**
@@ -10,7 +10,7 @@ var Plant = require('../models/plant'),
  * @param plantId
  * @param getPlantCallback
  */
-var getPlantInfoById = function (plantId, getPlantCallback) {
+let getPlantInfoById = function (plantId, getPlantCallback) {
 
     if (!plantId.match(/^[0-9a-fA-F]{24}$/)) {
         getPlantCallback('plantId is NOT valid: ' + plantId);
@@ -31,11 +31,11 @@ var getPlantInfoById = function (plantId, getPlantCallback) {
  * @param callback
  * @returns {Array} Represent resources ids images
  */
-var getResourcesIdsImagesForPlant = function (modelId, callback) {
+let getResourcesIdsImagesForPlant = function (modelId, callback) {
 
     logger.debug(' Getting resources ids images from model ');
 
-    var resourcesIds = [];
+    let resourcesIds = [];
 
     Plant.find({_id: modelId}, function (err, plantDB) {
         if (err) {
@@ -46,10 +46,10 @@ var getResourcesIdsImagesForPlant = function (modelId, callback) {
             return callback('The plant was not found');
         }
 
-        var plant = JSON.parse(JSON.stringify(plantDB))[0];
+        let plant = JSON.parse(JSON.stringify(plantDB))[0];
 
         if (plant.images) {
-            for (var i = 0; i < plant.images.length; i++) {
+            for (let i = 0; i < plant.images.length; i++) {
                 resourcesIds.push(plant.images[i]._id);
             }
         }
@@ -62,7 +62,7 @@ var getResourcesIdsImagesForPlant = function (modelId, callback) {
  * @param name Plant's name
  * @param getPlantCallback
  */
-var getPlantInfoByName = function (name, getPlantCallback) {
+let getPlantInfoByName = function (name, getPlantCallback) {
 
     Plant.find({"name": name}, function (error, plant) {
         if (error) {
@@ -73,7 +73,7 @@ var getPlantInfoByName = function (name, getPlantCallback) {
     });
 };
 
-var getPlantName = function (plantId, getPlantCallback) {
+let getPlantName = function (plantId, getPlantCallback) {
 
     Plant.findById(plantId, function (err, plant) {
         if (err) {
@@ -85,7 +85,7 @@ var getPlantName = function (plantId, getPlantCallback) {
     });
 };
 
-var convertPlantsIdsFromMongo = function (plants, callback) {
+let convertPlantsIdsFromMongo = function (plants, callback) {
 
     async.each(plants, function (plant, callback) {
         convertIdsFromMongo(plant, callback);
@@ -102,9 +102,9 @@ var convertPlantsIdsFromMongo = function (plants, callback) {
  * @param plant Plant Object
  * @param convertIdsCallback
  */
-var convertIds = function (plant, convertIdsCallback) {
+let convertIds = function (plant, convertIdsCallback) {
 
-    var flavors, attributes, plagues;
+    let flavors, attributes, plagues;
 
     async.series([
             function (callback) {
@@ -155,12 +155,12 @@ var convertIds = function (plant, convertIdsCallback) {
  * @param plant Plant
  * @param convertIdsFromMongoCallback
  */
-var convertIdsFromMongo = function (plant, convertIdsFromMongoCallback) {
+let convertIdsFromMongo = function (plant, convertIdsFromMongoCallback) {
 
-    var flavors = plant.flavors;
-    var attributes = plant.attributes;
-    var plagues = plant.plagues;
-    var images = plant.images;
+    let flavors = plant.flavors;
+    let attributes = plant.attributes;
+    let plagues = plant.plagues;
+    let images = plant.images;
 
     async.series([
             function (callback) {
@@ -207,16 +207,16 @@ var convertIdsFromMongo = function (plant, convertIdsFromMongoCallback) {
         });
 };
 
-var getPlantsByGardenId = function (gardenId, callback) {
+let getPlantsByGardenId = function (gardenId, callback) {
 
-    var filterPlants = [];
+    let filterPlants = [];
 
     Plant.find(function (err, plants) {
         if (err) {
             return callback(err);
         }
 
-        for (var i = 0; i < plants.length; i++) {
+        for (let i = 0; i < plants.length; i++) {
             if (plants[i]._doc.gardenId.equals(gardenId)) {
                 filterPlants.push(plants[i]);
             }

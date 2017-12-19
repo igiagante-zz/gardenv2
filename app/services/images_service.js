@@ -4,7 +4,7 @@
 
 "use strict";
 
-var fs = require('extfs'),
+let fs = require('extfs'),
     logger = require('../utils/logger'),
     async = require('async'),
     im = require('imagemagick'),
@@ -14,25 +14,25 @@ var fs = require('extfs'),
     rimraf = require('rimraf');
 
 
-var pathImagesUploaded = process.cwd() + '/public/images/uploads/';
+let pathImagesUploaded = process.cwd() + '/public/images/uploads/';
 
-var getFolderImagePath = function (folderName) {
+let getFolderImagePath = function (folderName) {
     return pathImagesUploaded + folderName;
 };
 
-var getMainImagePath = function (folderName, imageFileName) {
+let getMainImagePath = function (folderName, imageFileName) {
     return pathImagesUploaded + folderName + '/fullsize/' + imageFileName;
 };
 
-var getThumbImagePath = function (folderName, imageFileName) {
+let getThumbImagePath = function (folderName, imageFileName) {
     return pathImagesUploaded + folderName + '/thumb/' + imageFileName;
 };
 
-var getUrlImagePath = function (folderName, imageFileName) {
+let getUrlImagePath = function (folderName, imageFileName) {
     return '/images/uploads/' + folderName + '/fullsize/' + imageFileName;
 };
 
-var getThumbUrlImagePath = function (folderName, imageFileName) {
+let getThumbUrlImagePath = function (folderName, imageFileName) {
     return '/images/uploads/' + folderName + '/thumb/' + imageFileName;
 };
 
@@ -45,10 +45,10 @@ var getThumbUrlImagePath = function (folderName, imageFileName) {
  * @param imageFileName - the original file name
  * @param resizeImageCallback - Callback to communicate if the exit was successful
  */
-var resizeImage = function (folderName, imageFileName, resizeImageCallback) {
+let resizeImage = function (folderName, imageFileName, resizeImageCallback) {
 
-    var mainPath = getMainImagePath(folderName, imageFileName);
-    var thumbPath = getThumbImagePath(folderName, imageFileName);
+    let mainPath = getMainImagePath(folderName, imageFileName);
+    let thumbPath = getThumbImagePath(folderName, imageFileName);
 
     im.resize({srcPath: mainPath, dstPath: thumbPath, width: 400},
 
@@ -68,7 +68,7 @@ var resizeImage = function (folderName, imageFileName, resizeImageCallback) {
  * @param newPath
  * @param renameImageFilePathCallback
  */
-var renameImageFilePath = function (image, newPath, renameImageFilePathCallback) {
+let renameImageFilePath = function (image, newPath, renameImageFilePathCallback) {
 
     fs.readFile(image.path, function (err, data) {
         if (err) {
@@ -85,7 +85,7 @@ var renameImageFilePath = function (image, newPath, renameImageFilePathCallback)
  * @param newPath
  * @param writeImageCallback
  */
-var writeImageFile = function (data, newPath, writeImageCallback) {
+let writeImageFile = function (data, newPath, writeImageCallback) {
 
     fs.writeFile(newPath, data, function (err) {
         if (err) {
@@ -104,9 +104,9 @@ var writeImageFile = function (data, newPath, writeImageCallback) {
  * @param image Image File
  * @param mainCallback
  */
-var persistImageFile = function (folderName, image, mainCallback) {
+let persistImageFile = function (folderName, image, mainCallback) {
 
-    var newPath = pathImagesUploaded + folderName + '/fullsize/' + image.originalname;
+    let newPath = pathImagesUploaded + folderName + '/fullsize/' + image.originalname;
 
     async.waterfall([
 
@@ -139,13 +139,13 @@ var persistImageFile = function (folderName, image, mainCallback) {
  * @param files
  * @param persistImageFilesCallback
  */
-var persistImageFiles = function (folderName, files, persistImageFilesCallback) {
+let persistImageFiles = function (folderName, files, persistImageFilesCallback) {
 
     if (_.isEmpty(files)) {
         return persistImageFilesCallback(undefined);
     }
 
-    var images = [];
+    let images = [];
 
     _.forEach(files, function (value, key) {
         console.log(key);
@@ -176,16 +176,16 @@ var persistImageFiles = function (folderName, files, persistImageFilesCallback) 
  * @param folderName - Folder's name
  * @param createImageDirectoryCallback
  */
-var createImageDirectory = function (folderName, files, createImageDirectoryCallback) {
+let createImageDirectory = function (folderName, files, createImageDirectoryCallback) {
 
     if (_.isEmpty(files)) {
         return createImageDirectoryCallback(undefined);
     }
 
-    var fullsizeImagePath = getMainImagePath(folderName, "");
-    var thumbImagePath = getThumbImagePath(folderName, "");
+    let fullsizeImagePath = getMainImagePath(folderName, "");
+    let thumbImagePath = getThumbImagePath(folderName, "");
 
-    var flow = {
+    let flow = {
 
         createFullsizeImageFolder: function (callback) {
             fs.exists(fullsizeImagePath, function (exist) {
@@ -231,9 +231,9 @@ var createImageDirectory = function (folderName, files, createImageDirectoryCall
  * @param files Image file
  * @param createProcessImageFilesCallback
  */
-var createProcessImageFiles = function (folderName, files, createProcessImageFilesCallback) {
+let createProcessImageFiles = function (folderName, files, createProcessImageFilesCallback) {
 
-    var flow = {
+    let flow = {
         // Persist each new image file
         createImageDirectory: async.apply(createImageDirectory, folderName, files),
 
@@ -256,7 +256,7 @@ var createProcessImageFiles = function (folderName, files, createProcessImageFil
  * @param folderName
  * @param deleteFolderImageCallback
  */
-var deleteFolderImage = function (folderName, deleteFolderImageCallback) {
+let deleteFolderImage = function (folderName, deleteFolderImageCallback) {
     rimraf(getFolderImagePath(folderName), function (error) {
         if (error) {
             deleteFolderImageCallback(error);
@@ -272,7 +272,7 @@ var deleteFolderImage = function (folderName, deleteFolderImageCallback) {
  * @param path the path file
  * @param removeFileCallback
  */
-var removeFile = function (path, removeFileCallback) {
+let removeFile = function (path, removeFileCallback) {
 
     fs.exists(path, function (exists) {
         if (exists) {
@@ -297,15 +297,15 @@ var removeFile = function (path, removeFileCallback) {
  * @param folderName
  * @param deleteDirectoriesCallback
  */
-var deleteImageDirectories = function (folderName, deleteDirectoriesCallback) {
+let deleteImageDirectories = function (folderName, deleteDirectoriesCallback) {
 
     logger.debug('Check if directories should be deleted');
 
-    var imageFolderPath = getFolderImagePath(folderName);
-    var fullsizeImagePath = getMainImagePath(folderName, "");
-    var thumbImagePath = getThumbImagePath(folderName, "");
+    let imageFolderPath = getFolderImagePath(folderName);
+    let fullsizeImagePath = getMainImagePath(folderName, "");
+    let thumbImagePath = getThumbImagePath(folderName, "");
 
-    var flow = {
+    let flow = {
         deleteFullsizeImageFolder: function (callback) {
             fs.exists(fullsizeImagePath, function (exist) {
                 if (exist) {
@@ -371,17 +371,17 @@ var deleteImageDirectories = function (folderName, deleteDirectoriesCallback) {
  * @param imageName the image name
  * @param deleteImageFileCallback
  */
-var deleteImageFile = function (folderName, imageName, deleteImageFileCallback) {
+let deleteImageFile = function (folderName, imageName, deleteImageFileCallback) {
 
     async.series([
             function (callback) {
                 logger.debug('Remove thumbnail file');
-                var thumbsPath = getThumbImagePath(folderName, imageName);
+                let thumbsPath = getThumbImagePath(folderName, imageName);
                 removeFile(thumbsPath, callback);
             },
             function (callback) {
                 logger.debug('Remove full size file');
-                var fullsizePath = getMainImagePath(folderName, imageName);
+                let fullsizePath = getMainImagePath(folderName, imageName);
                 removeFile(fullsizePath, callback);
             },
             function (callback) {
@@ -403,7 +403,7 @@ var deleteImageFile = function (folderName, imageName, deleteImageFileCallback) 
  * @param files
  * @param deleteImageFilesCallback
  */
-var deleteImageFiles = function (folderName, files, deleteImageFilesCallback) {
+let deleteImageFiles = function (folderName, files, deleteImageFilesCallback) {
 
     if (_.isEmpty(files)) {
         return deleteImageFilesCallback(undefined);
@@ -434,7 +434,7 @@ var deleteImageFiles = function (folderName, files, deleteImageFilesCallback) {
  * @param callback callback for the async auto
  * @param results results.getImagesDataToBeDelete represents resources ids images to be deleted
  */
-var deleteImageFilesProcess = function (folderName, callback, results) {
+let deleteImageFilesProcess = function (folderName, callback, results) {
     //delete images for one model
     deleteImageFiles(folderName, results.getImagesDataToBeDelete, function (err, result) {
         if (err) {
@@ -455,13 +455,13 @@ var deleteImageFilesProcess = function (folderName, callback, results) {
  * @param callback
  * @returns {Array} Represent documents that should be deleted
  */
-var verifyIfImagesShouldBeDeleted = function (imagesFromDB, resourcesIds, callback) {
+let verifyIfImagesShouldBeDeleted = function (imagesFromDB, resourcesIds, callback) {
 
     logger.debug(' Getting image to be deleted ');
 
     if (resourcesIds) {
         //Represent an array of resources ids which are found in imagesFromDB Array
-        var result = imagesFromDB.filter(function (item) {
+        let result = imagesFromDB.filter(function (item) {
             return resourcesIds.filter(function (id) {
                     return item._id == id;
                 }).length === 0;
@@ -484,31 +484,31 @@ var verifyIfImagesShouldBeDeleted = function (imagesFromDB, resourcesIds, callba
  * @param callback
  * @returns {Array} Represent image documents
  */
-var getImageData = function (folderName, files, imageMain, callback) {
+let getImageData = function (folderName, files, imageMain, callback) {
 
     if (_.isEmpty(files)) {
         return callback(undefined);
     }
 
-    var imageData = [];
+    let imageData = [];
 
     // Object.keys
-    var keys = Object.keys(files);
+    let keys = Object.keys(files);
 
-    for (var i = 0; i < keys.length; ++i) {
+    for (let i = 0; i < keys.length; ++i) {
 
-        var file = files[keys[i]];
+        let file = files[keys[i]];
 
         //paths to urls
-        var urlPath = getUrlImagePath(folderName, file.originalname);
-        var thumbnailUrlPath = getThumbUrlImagePath(folderName, file.originalname);
+        let urlPath = getUrlImagePath(folderName, file.originalname);
+        let thumbnailUrlPath = getThumbUrlImagePath(folderName, file.originalname);
 
-        var data = {};
+        let data = {};
         data._id = mongoose.Types.ObjectId();
         data.url = urlPath;
         data.name = file.originalname;
 
-        var fileName = _.split(file.originalname, '.', 2);
+        let fileName = _.split(file.originalname, '.', 2);
 
         data.thumbnailUrl = thumbnailUrlPath;
         data.type = file.mimetype;
@@ -529,24 +529,24 @@ var getImageData = function (folderName, files, imageMain, callback) {
  * @param callback
  * @param results
  */
-var updateModel = function (model, callback, results) {
+let updateModel = function (model, callback, results) {
 
     logger.debug(' Update model with image\'s documents ');
 
-    var imagesDataToBeDeleted = results.getImagesDataToBeDelete;
-    var imagesDoc = results.getImagesDataFromRequest;
+    let imagesDataToBeDeleted = results.getImagesDataToBeDelete;
+    let imagesDoc = results.getImagesDataFromRequest;
 
     //Add new images
     if (imagesDoc) {
-        for (var i = 0; i < imagesDoc.length; i++) {
+        for (let i = 0; i < imagesDoc.length; i++) {
             model.images.push(imagesDoc[i]);
         }
     }
 
     //Delete some images
     if (imagesDataToBeDeleted) {
-        for (var k = 0; k < imagesDataToBeDeleted.length; k++) {
-            for (var j = 0; j < model.images.length; j++) {
+        for (let k = 0; k < imagesDataToBeDeleted.length; k++) {
+            for (let j = 0; j < model.images.length; j++) {
                 if (model.images[j]._id == imagesDataToBeDeleted[k]._id) {
                     model.images[j].remove();
                 }
@@ -557,11 +557,11 @@ var updateModel = function (model, callback, results) {
     callback(undefined, model);
 };
 
-var updateImageFolderName = function (oldName, newName, callback) {
+let updateImageFolderName = function (oldName, newName, callback) {
     if (!_.isEmpty(oldName)) {
 
-        var oldPath = pathImagesUploaded + oldName;
-        var newPath = pathImagesUploaded + newName;
+        let oldPath = pathImagesUploaded + oldName;
+        let newPath = pathImagesUploaded + newName;
 
         fs.rename(oldPath, newPath, function (err) {
             if (err) {
@@ -572,7 +572,7 @@ var updateImageFolderName = function (oldName, newName, callback) {
     callback(undefined);
 };
 
-var getImagesDataFromRequest = function (model, request, callback) {
+let getImagesDataFromRequest = function (model, request, callback) {
 
     logger.debug(' Getting image data from files ');
 
@@ -591,20 +591,20 @@ var getImagesDataFromRequest = function (model, request, callback) {
  * @param oldFolderName If the value is not empty, the folder's image name should be updated
  * @param mainCallback
  */
-var processImageUpdate = function (request, model, oldFolderName, mainCallback) {
+let processImageUpdate = function (request, model, oldFolderName, mainCallback) {
 
     //convert model to json and then to Array
-    var imagesFromDB = JSON.parse(JSON.stringify(model.images));
+    let imagesFromDB = JSON.parse(JSON.stringify(model.images));
 
     //obtain resourcesIds in order to check if some picture needs to be updated
-    var resourcesIds = null;
+    let resourcesIds = null;
     if (request.body.resourcesIds) {
         resourcesIds = JSON.parse(request.body.resourcesIds);
     }
 
-    var folderName = model.name;
+    let folderName = model.name;
 
-    var flow = {
+    let flow = {
 
         //If the name of the plant (Model) changes, the folder's image path should be updated.
         updateImageFolderName: async.apply(updateImageFolderName, oldFolderName, request.body.name),
@@ -630,7 +630,7 @@ var processImageUpdate = function (request, model, oldFolderName, mainCallback) 
         save: ['updateImagesDataFromModel', function (callback, results) {
 
             //obtain the model updated
-            var model = results.updateImagesDataFromModel;
+            let model = results.updateImagesDataFromModel;
 
             model.save(function (err) {
                 if (err) {

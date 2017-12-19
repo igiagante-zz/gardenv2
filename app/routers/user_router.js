@@ -2,17 +2,17 @@
  * Created by igiagante on 28/7/16.
  */
 
-
 "use strict";
 
-var express = require('express'),
-    userController = require('../controllers/user_controller'),
-    router = express.Router();
+let express = require('express'),
+    userCtrl = require('../controllers/user_controller');
 
-router.post('/signup', userController.signup);
+const router = express.Router(); // eslint-disable-line new-cap
 
-router.post('/login', userController.login);
+router.post('/signup', userCtrl.signup);
 
-router.post('/refreshToken', userController.refreshToken);
+router.post('/login', userCtrl.login);
+
+router.post('/refreshToken', userCtrl.refreshToken);
 
 module.exports = router;

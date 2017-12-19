@@ -4,10 +4,10 @@
 
 "use strict";
 
-var User = require('../models/user');
+let User = require('../models/user');
 
 
-var addGardenIdToUser = function (userId, gardenId, addGardenIdToUserCallback) {
+let addGardenIdToUser = function (userId, gardenId, addGardenIdToUserCallback) {
 
     User.findOne({_id: userId}, function (err, user) {
         if (err) {
@@ -28,16 +28,16 @@ var addGardenIdToUser = function (userId, gardenId, addGardenIdToUserCallback) {
     });
 };
 
-var removeGardenIdFromUser = function (userId, gardenId, addGardenIdToUserCallback) {
+let removeGardenIdFromUser = function (userId, gardenId, addGardenIdToUserCallback) {
 
     User.findOne({_id: userId}, function (err, user) {
         if (err) {
             return addGardenIdToUserCallback(err);
         }
 
-        var gardensIds = user._doc.gardensIds;
+        let gardensIds = user._doc.gardensIds;
         if(gardensIds) {
-            var index = gardensIds.indexOf(gardenId);
+            let index = gardensIds.indexOf(gardenId);
             gardensIds.splice(index, 1);
         }
 

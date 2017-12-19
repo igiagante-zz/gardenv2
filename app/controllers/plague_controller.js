@@ -3,7 +3,7 @@
  */
 
 var Plague = require('../models/plague'),
-    utilObject = require('../commons/util_object');
+    utilObject = require('../helpers/util_object');
 
 /**
  * Get all the plagues

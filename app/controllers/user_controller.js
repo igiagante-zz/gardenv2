@@ -4,85 +4,78 @@
 
 "use strict";
 
-var User = require('../models/user'),
-    jwt = require('jwt-simple'),
+let User = require('../models/user'),
+    jwt = require('passport-jwt'),
     moment = require('moment'),
-    auth = require('../../config/auth');
+    config = require('../../config/config'),
+    APIError = require('../helpers/APIError'),
+    httpStatus = require('http-status');
 
-var invalidUser = 'INVALID_USER';
-var userNotFound = 'USER_NOT_FOUND';
-var wrongPassword = 'WRONG_PASSWORD';
+let invalidUser = 'INVALID_USER';
+let userNotFound = 'USER_NOT_FOUND';
+let wrongPassword = 'WRONG_PASSWORD';
 
-var _createToken = function(user) {
-    var payload = {
+let _createToken = function(user) {
+    let payload = {
         sub: user._id,
         iat: moment().unix(),
         exp: moment().add(1, "days").unix()
     };
-    return jwt.encode(payload, auth.secret);
+    return jwt.encode(payload, config.jwtSecret);
 };
 
-var signup = function(req, res) {
+let signup = function(req, res, next) {
 
     if (!req.body.username || !req.body.password) {
         res.json({success: false, msg: 'Please pass name and password.'});
     } else {
-        var newUser = new User({
+
+        let newUser = new User({
             name: req.body.username,
             password: req.body.password
         });
-        // save the user
-        newUser.save(function(err, user) {
-            // analizar errores comunes
-            if (err) {
-                return res.status(409).send({message: invalidUser});
-            }
 
-            var token = _createToken(user);
-            return res.status(200).json({token : token });
-        });
+        newUser.save()
+            .then(savedUser => res.status(200).json({token : _createToken(savedUser)}))
+            .catch(e => next(e));
     }
 };
 
-var login = function(req, res) {
-    User.findOne({
-        name: req.body.username
-    }, function(err, user) {
-        if (err) throw err;
+let login = function(req, res, next) {
 
-        if (!user) {
-            res.status(404).send({message: userNotFound});
-        } else {
-            // check if password matches
+    User.getByName(req.body.username)
+        .then( user => {
             user.comparePassword(req.body.password, function (err, isMatch) {
                 if (isMatch && !err) {
                     // if user is found and password is right create a token
-                    var token = _createToken(user);
+                    let token = _createToken(user);
                     // return the information including token as JSON
                     res.status(200).json({token: token});
                 } else {
                     res.status(403).send({message: wrongPassword});
                 }
             });
-        }
-    });
+        })
+        .catch(e => {
+            const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED, true);
+            return next(err);
+        });
 };
 
-var refreshToken = function(req, res) {
-    User.findOne({
-        _id: req.body.userId
-    }, function(err, user) {
-        if (err) throw err;
+let refreshToken = function(req, res, next) {
 
-        if (!user) {
-            res.send({message: userNotFound});
-        } else {
-            // if user is found, lets create a token
-            var token = _createToken(user);
-            // return the information including token as JSON
-            return res.status(200).json({token: token});
-        }
-    });
+    User.getById(req.body.userId)
+        .then( user => {
+            if (!user) {
+                res.send({message: userNotFound});
+            } else {
+                // if user is found, lets create a token
+                let token = _createToken(user);
+                // return the information including token as JSON
+                return res.status(200).json({token: token});
+            }
+        })
+        .catch(e => next(e));
 };
 
 module.exports = {

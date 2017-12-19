@@ -1,10 +1,10 @@
 "use strict";
 
-var Dose = require('../models/dose'),
+let Dose = require('../models/dose'),
     async = require('async'),
     logger = require('../utils/logger');
 
-var getDoseById = function (doseId, getDoseByIrrigationIdCallback) {
+let getDoseById = function (doseId, getDoseByIrrigationIdCallback) {
 
     Dose.findById({"_id": doseId}, function (err, dose) {
         if (err) {
@@ -20,7 +20,7 @@ var getDoseById = function (doseId, getDoseByIrrigationIdCallback) {
  * @param irrigations
  * @param addDoseCallback
  */
-var addDoses = function (irrigations, addDoseCallback) {
+let addDoses = function (irrigations, addDoseCallback) {
 
     async.each(irrigations, function (irrigation, callback) {
 
@@ -39,7 +39,7 @@ var addDoses = function (irrigations, addDoseCallback) {
  * @param irrigation
  * @param addDoseCallback
  */
-var addDoseToIrrigation = function (irrigation, addDoseCallback) {
+let addDoseToIrrigation = function (irrigation, addDoseCallback) {
 
     getDoseById(irrigation._doc.doseId, function (err, dose) {
         if (err) {

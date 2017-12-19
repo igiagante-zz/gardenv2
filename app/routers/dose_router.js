@@ -1,22 +1,25 @@
 "use strict";
 
-var express = require('express'),
-    router = express.Router(),
-    doseController = require('../controllers/dose_controller');
+let express = require('express'),
+    doseCtrl = require('../controllers/dose_controller');
 
-//create a dose
-router.post('/', doseController.createDose);
+const router = express.Router(); // eslint-disable-line new-cap
 
-//update a dose
-router.put('/:dose_id', doseController.updateDose);
-    
-//retrieve one dose
-router.get('/:dose_id', doseController.getDose);
+router.route('/')
+    /** GET /api/doses - Get list of doses */
+    .get(doseCtrl.getAll)
 
-//delete a dose
-router.delete('/:dose_id', doseController.deleteDose);
+    /** POST /api/doses - Create new dose */
+    .post(doseCtrl.createDose);
 
-//get all dose
-router.get('/', doseController.getAll);
+router.route('/:dose_id')
+    /** GET /api/doses/:doseId - Get dose */
+    .get(doseCtrl.getDose)
+
+    /** PUT /api/doses/:doseId - Update dose */
+    .put(doseCtrl.updateDose)
+
+    /** DELETE /api/doses/:doseId - Delete dose */
+    .delete(doseCtrl.deleteDose);
 
 module.exports = router;

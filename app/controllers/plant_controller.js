@@ -6,8 +6,8 @@ var Plant = require('../models/plant'),
     imageService = require('../services/images_service'),
     plantService = require('../services/plant_service'),
     util = require('util'),
-    utilObject = require('../commons/util_object'),
-    utilImage = require('../commons/util_image');
+    utilObject = require('../helpers/util_object'),
+    utilImage = require('../helpers/util_image');
 
 /**
  * Create a plant

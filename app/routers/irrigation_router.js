@@ -1,18 +1,23 @@
-var express = require('express'),
-    router = express.Router(),
-    irrigationController = require('../controllers/irrigation_controller');
+"use strict";
 
-//create a irrigation
-router.post('/', irrigationController.createIrrigation);
-    
-//retrieve one irrigation
-router.get('/:irrigation_id', irrigationController.getIrrigation);
+let express = require('express'),
+    irrigationCtrl = require('../controllers/irrigation_controller');
 
-//delete a irrigation
-router.delete('/:irrigation_id', irrigationController.deleteIrrigation);
+const router = express.Router(); // eslint-disable-line new-cap
 
-//get all irrigations
-router.get('/', irrigationController.getAll);
+router.route('/')
+    /** GET /api/irrigations - Get list of irrigations */
+    .get(irrigationCtrl.getAll)
+
+    /** POST /api/irrigations - Create new irrigation */
+    .post(irrigationCtrl.createIrrigation);
+
+router.route('/:irrigation_id')
+    /** GET /api/irrigations/:irrigationId - Get irrigation */
+    .get(irrigationCtrl.getIrrigation)
+
+    /** DELETE /api/irrigations/:irrigationId - Delete irrigation */
+    .delete(irrigationCtrl.deleteIrrigation);
 
 module.exports = router;
 

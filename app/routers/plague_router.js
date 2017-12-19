@@ -4,11 +4,12 @@
 
 "use strict";
 
-var express = require('express'),
-    router = express.Router(),
-    plagueController = require('../controllers/plague_controller');
+let express = require('express'),
+    plaguesCtrl = require('../controllers/plague_controller');
+
+const router = express.Router(); // eslint-disable-line new-cap
 
 //get all plagues
-router.get('/', plagueController.getAll);
+router.get('/', plaguesCtrl.getAll);
 
 module.exports = router;

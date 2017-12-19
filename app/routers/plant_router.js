@@ -1,23 +1,25 @@
 "use strict";
 
-var express = require('express'),
-    router = express.Router(),
-    plantController = require('../controllers/plant_controller');
+let express = require('express'),
+    plantCtrl = require('../controllers/plant_controller');
 
-//create a plant
-router.post('/', plantController.createPlant);
+const router = express.Router(); // eslint-disable-line new-cap
 
-//update a plant
-router.put('/:plant_id', plantController.updatePlant);
+router.route('/')
+    /** GET /api/plants - Get list of plants */
+    .get(plantCtrl.getAll)
 
-//retrieve one plant
-router.get('/:plant_id', plantController.getPlant);
+    /** POST /api/plants - Create new plant */
+    .post(plantCtrl.createPlant);
 
-//delete a plant
-router.delete('/:plant_id', plantController.deletePlant);
+router.route('/:plant_id')
+    /** GET /api/plants/:plantId - Get plant */
+    .get(plantCtrl.getPlant)
 
-//get all plants
-router.get('/', plantController.getAll);
+    /** PUT /api/plants/:plantId - Update plant */
+    .put(plantCtrl.updatePlant)
 
+    /** DELETE /api/plants/:plantId - Delete plant */
+    .delete(plantCtrl.deletePlant);
 
 module.exports = router;
