@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+let mongoose = require('mongoose');
+let Schema = mongoose.Schema;
 
-var Images = new Schema({
+let Images = new Schema({
 	url: { type: String, required: true },
     thumbnailUrl: { type: String, required: true },
     deleteUrl: { type: String, required: true },
@@ -10,7 +10,11 @@ var Images = new Schema({
     type: { type: String, required: true},
     size: Number,
     main: { type: Boolean, default: false},
-    plantId: { type: Schema.Types.ObjectId, required: true }
+    plantId: { type: Schema.Types.ObjectId, required: true },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 module.exports = mongoose.model('Images', Images);

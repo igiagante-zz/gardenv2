@@ -5,11 +5,11 @@
 "use strict";
 
 // Load required packages
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+let mongoose = require('mongoose');
+let Schema = mongoose.Schema;
 
 // Define measure sensor schema
-var measureSchema = new mongoose.Schema({
+let measureSchema = new mongoose.Schema({
     measureDate: {type: Date, default: new Date()},
     measure: Number,
     unit: String,
@@ -17,7 +17,11 @@ var measureSchema = new mongoose.Schema({
         name: { type: String, required: true }
     },
     gardenId: { type: Schema.Types.ObjectId, required: true },
-    plantId: { type: Schema.Types.ObjectId }
+    plantId: { type: Schema.Types.ObjectId },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 // Export the Mongoose model

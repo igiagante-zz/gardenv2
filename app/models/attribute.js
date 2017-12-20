@@ -5,18 +5,22 @@
 "use strict";
 
 // Load required packages
-var mongoose = require('mongoose'),
+let mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 // Define the attribute schema
-var attributeSchema = new mongoose.Schema({
+let attributeSchema = new mongoose.Schema({
 
     _id: Schema.Types.ObjectId,
     /*
      Type of attribute: Effect, Medicinal, Symptom
      */
     type: {type: String, required: true},
-    name: {type: String, required: true}
+    name: {type: String, required: true},
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 // Export the Mongoose model

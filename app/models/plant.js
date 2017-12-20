@@ -1,11 +1,11 @@
 "use strict";
 
 // Load required packages
-var mongoose = require('mongoose'),
+let mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 // Define the plant schema
-var plantSchema = new mongoose.Schema({
+let plantSchema = new mongoose.Schema({
     name: {type: String, required: true},
     seedDate: {type: Date, default: new Date()},
     size: Number,
@@ -53,7 +53,11 @@ var plantSchema = new mongoose.Schema({
             name: {type: String, required: true},
             imageUrl: {type: String, required: true},
         }
-    ]
+    ],
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 // Export the Mongoose model

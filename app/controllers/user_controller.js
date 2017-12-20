@@ -8,7 +8,7 @@ let User = require('../models/user'),
     jwt = require('jwt-simple'),
     moment = require('moment'),
     config = require('../../config/config'),
-    APIError = require('../helpers/APIError'),
+    APIError = require('../helpers/error/APIError'),
     httpStatus = require('http-status');
 
 let invalidUser = 'INVALID_USER';
@@ -55,12 +55,14 @@ let login = function(req, res, next) {
                     // return the information including token as JSON
                     res.status(200).json({token: token});
                 } else {
-                    res.status(403).send({message: wrongPassword});
+                    //res.status(403).send({message: wrongPassword});
+                    const err = new APIError(httpStatus.UNAUTHORIZED, 'Authentication error', 601,  'The password is not correct');
+                    return next(err);
                 }
             });
         })
         .catch(e => {
-            const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED, true);
+            const err = new APIError(httpStatus.UNAUTHORIZED, 'Authentication error', 601,  'The password is not correct');
             return next(err);
         });
 };

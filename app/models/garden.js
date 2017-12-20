@@ -1,15 +1,19 @@
 "use strict";
 
 // Load required packages
-var mongoose = require('mongoose'),
+let mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 // Define our garden schema
-var gardenSchema = new mongoose.Schema({
+let gardenSchema = new mongoose.Schema({
   userId: {type: Schema.Types.ObjectId, required: true},
   name: String,
   startDate: {type: Date, default: new Date()},
-  endDate: {type: Date}
+  endDate: {type: Date},
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 // Export the Mongoose model

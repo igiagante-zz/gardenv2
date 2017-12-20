@@ -1,7 +1,7 @@
 let Promise = require('bluebird'),
     mongoose = require('mongoose'),
     httpStatus = require('http-status'),
-    APIError = require('../helpers/APIError'),
+    APIError = require('../helpers/error/APIError'),
     bcrypt = require('bcrypt'),
     bcryptPromise = require('../helpers/bcrypt-promise');
 

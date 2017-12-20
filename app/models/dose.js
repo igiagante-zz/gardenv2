@@ -1,11 +1,11 @@
 "use strict";
 
 // Load required packages
-var mongoose = require('mongoose'),
+let mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 // Define the dose schema
-var doseSchema = new mongoose.Schema({
+let doseSchema = new mongoose.Schema({
 	water: Number,
 	phDose: Number,
 	ph: Number,
@@ -19,7 +19,11 @@ var doseSchema = new mongoose.Schema({
             description: String,
             quantityUsed: Number
 		}
-	]
+	],
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 // Export the Mongoose model

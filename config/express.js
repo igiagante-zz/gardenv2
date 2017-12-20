@@ -12,7 +12,7 @@ let express = require('express'),
     winstonInstance = require('winston'),
     routes = require('../app/routers/main_router'),
     config = require('./config'),
-    APIError = require('../app/helpers/APIError');
+    APIError = require('../app/helpers/error/APIError');
 
 let passport = require('passport'),
     expressValidator = require('express-validator');
@@ -73,7 +73,7 @@ app.use((err, req, res, next) => {
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-    const err = new APIError('API not found', httpStatus.NOT_FOUND);
+    const err = new APIError(httpStatus.NOT_FOUND, 'API not found');
     return next(err);
 });
 
@@ -84,11 +84,13 @@ if (config.env !== 'test') {
     }));
 }
 
-// error handler, send stacktrace only during development
+// error handler
 app.use((err, req, res, next) => // eslint-disable-line no-unused-vars
     res.status(err.status).json({
-        message: err.isPublic ? err.message : httpStatus[err.status],
-        stack: config.env === 'development' ? err.stack : {}
+        status : err.status,
+        errorType: err.errorType,
+        errorCode: err.errorCode,
+        errorMessage: err.message
     })
 );
 

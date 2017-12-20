@@ -5,11 +5,11 @@
 "use strict";
 
 // Load required packages
-var mongoose = require('mongoose'),
+let mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 // Define the nutrient schema
-var nutrientSchema = new mongoose.Schema({
+let nutrientSchema = new mongoose.Schema({
     userId: {type: Schema.Types.ObjectId, required: true},
     name: String,
     ph: Number,
@@ -27,7 +27,11 @@ var nutrientSchema = new mongoose.Schema({
             main: { type: Boolean, default: 0 }
         }
     ],
-    nutrientDoseIds: [Schema.Types.ObjectId]
+    nutrientDoseIds: [Schema.Types.ObjectId],
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 // Export the Mongoose model

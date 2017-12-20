@@ -5,14 +5,18 @@
 "use strict";
 
 // Load required packages
-var mongoose = require('mongoose'),
+let mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 // Define the flavor schema
-var flavorSchema = new mongoose.Schema({
+let flavorSchema = new mongoose.Schema({
     _id: Schema.Types.ObjectId,
     name: {type: String, required: true},
-    imageUrl: {type: String, required: true}
+    imageUrl: {type: String, required: true},
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 // Export the Mongoose model

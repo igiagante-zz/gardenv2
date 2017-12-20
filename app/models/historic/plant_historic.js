@@ -6,16 +6,20 @@
 "use strict";
 
 // Load required packages
-var mongoose = require('mongoose'),
+let mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 // Define the plant schema
-var plantHistoricSchema = new mongoose.Schema({
+let plantHistoricSchema = new mongoose.Schema({
     date: {type: Date, default: new Date()},
     plantId: Schema.Types.ObjectId,
     ec: Number,
     ph: Number,
-    height: Number
+    height: Number,
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 // Export the Mongoose model
