@@ -547,7 +547,7 @@ let updateModel = function (model, callback, results) {
     if (imagesDataToBeDeleted) {
         for (let k = 0; k < imagesDataToBeDeleted.length; k++) {
             for (let j = 0; j < model.images.length; j++) {
-                if (model.images[j]._id == imagesDataToBeDeleted[k]._id) {
+                if (model.images[j]._id === imagesDataToBeDeleted[k]._id) {
                     model.images[j].remove();
                 }
             }

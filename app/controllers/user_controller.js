@@ -5,7 +5,7 @@
 "use strict";
 
 let User = require('../models/user'),
-    jwt = require('passport-jwt'),
+    jwt = require('jwt-simple'),
     moment = require('moment'),
     config = require('../../config/config'),
     APIError = require('../helpers/APIError'),
@@ -36,7 +36,10 @@ let signup = function(req, res, next) {
         });
 
         newUser.save()
-            .then(savedUser => res.status(200).json({token : _createToken(savedUser)}))
+            .then(savedUser => {
+                    return res.status(200).json({token: _createToken(savedUser)})
+                }
+            )
             .catch(e => next(e));
     }
 };

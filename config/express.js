@@ -3,8 +3,8 @@
  */
 
 let express = require('express'),
-    expmethodOverrideress = require('body-parser'),
     cors = require('cors'),
+    bodyParser = require('body-parser'),
     httpStatus = require('http-status'),
     expressWinston = require('express-winston'),
     expressValidation = require('express-validation'),
@@ -14,8 +14,7 @@ let express = require('express'),
     config = require('./config'),
     APIError = require('../app/helpers/APIError');
 
-let passport = require('passport-jwt'),
-    multer = require('multer'),
+let passport = require('passport'),
     expressValidator = require('express-validator');
 
 // pass passport for configuration
@@ -23,15 +22,9 @@ require('../config/passport')(passport);
 
 const app = express();
 
-if (config.env === 'development') {
-    app.use(logger('dev'));
-}
-
 // parse body params and attache them to req.body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use(methodOverride());
 
 // secure apps by setting various HTTP headers
 app.use(helmet());
@@ -43,7 +36,7 @@ app.use(cors());
 // this will let us get the data from a POST
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
-app.use(multer()); // for parsing multipart/form-data
+//app.use(multer()); // for parsing multipart/form-data
 app.use(expressValidator()); // to validate requests
 
 // Use the passport package in our application
@@ -98,5 +91,9 @@ app.use((err, req, res, next) => // eslint-disable-line no-unused-vars
         stack: config.env === 'development' ? err.stack : {}
     })
 );
+
+//static
+console.log('process.cwd(): ' + process.cwd());
+app.use(express.static(process.cwd() + '/public'));
 
 module.exports = app;

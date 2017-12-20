@@ -1,7 +1,8 @@
-let passport = require('passport-jwt');
+let passport = require('passport');
+let passportJWT = require('passport-jwt');
 
-let JwtStrategy = passport.Strategy,
-    ExtractJwt = passport.ExtractJwt;
+let JwtStrategy = passportJWT.Strategy,
+    ExtractJwt = passportJWT.ExtractJwt;
 
 // load up the user model
 let User = require('../app/models/user');

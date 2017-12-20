@@ -24,16 +24,12 @@ let genSalt = function (password) {
 // hash the password with the salt
 let genHash = function(salt, password) {
     return new Promise((resolve,reject) => {
-        bcrypt.hash(password,salt,null,function(err,hash) {
+        bcrypt.hash(password, salt, function(err,hash) {
             if (err) {
                 reject(err);
             }
             else {
-                resolve({
-                    salt:salt,
-                    password:password,
-                    hash:hash
-                });
+                resolve(hash);
             }
         });
     });

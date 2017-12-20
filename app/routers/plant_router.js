@@ -1,8 +1,10 @@
 "use strict";
 
 let express = require('express'),
-    plantCtrl = require('../controllers/plant_controller');
+    plantCtrl = require('../controllers/plant_controller'),
+    multer = require('multer');
 
+const upload = multer({ dest: 'uploads/'});
 const router = express.Router(); // eslint-disable-line new-cap
 
 router.route('/')
@@ -10,7 +12,7 @@ router.route('/')
     .get(plantCtrl.getAll)
 
     /** POST /api/plants - Create new plant */
-    .post(plantCtrl.createPlant);
+    .post(plantCtrl.createPlant, upload.array('files', 10));
 
 router.route('/:plant_id')
     /** GET /api/plants/:plantId - Get plant */

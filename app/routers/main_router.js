@@ -13,9 +13,9 @@ let express = require('express'),
 
 const router = express.Router(); // eslint-disable-line new-cap
 
-/** GET /health-check - Check service health */
-router.get('/health-check', (req, res) =>
-    res.send('OK')
+/** GET /api - Check service health */
+router.get('/', (req, res) =>
+    res.send('server is UP!')
 );
 
 // middleware to use for all requests in order to verify if the user is authorized
@@ -36,16 +36,16 @@ let isUserAuthenticated = function (req, res, next) {
     });
 };
 
-router.use('/dose', isUserAuthenticated, doseRouter);
-router.use('/garden', isUserAuthenticated, gardenRouter);
-router.use('/irrigation', isUserAuthenticated, irrigationRouter);
-router.use('/plant', isUserAuthenticated, plantRouter);
-router.use('/nutrient', isUserAuthenticated, nutrientRouter);
-router.use('/sensor',  sensorRouter);
-router.use('/user', userRouter);
-router.use('/attribute', attributeRouter);
-router.use('/plague', plagueRouter);
-router.use('/flavor', flavorRouter);
+router.use('/doses', isUserAuthenticated, doseRouter);
+router.use('/gardens', isUserAuthenticated, gardenRouter);
+router.use('/irrigations', isUserAuthenticated, irrigationRouter);
+router.use('/plants', isUserAuthenticated, plantRouter);
+router.use('/nutrients', isUserAuthenticated, nutrientRouter);
+router.use('/sensors',  sensorRouter);
+router.use('/users', userRouter);
+router.use('/attributes', attributeRouter);
+router.use('/plagues', plagueRouter);
+router.use('/flavors', flavorRouter);
 
 
 module.exports = router;

@@ -1,9 +1,9 @@
-var express = require('express'),
+let express = require('express'),
     imageService = require('../services/images_service'),
     logger = require('../utils/logger');
 
 //Each plant has a main image to use like portrait in the gallery
-var getMainImage = function(req, res) {
+let getMainImage = function(req, res) {
     
     imageService.getMainImage(req.params.plant_id, function callback(error, image) {
         
@@ -14,9 +14,9 @@ var getMainImage = function(req, res) {
     }); 
 };
 
-var setMainImage = function(req, res){
+let setMainImage = function(req, res){
 
-    var mainImageData = {};
+    let mainImageData = {};
     mainImageData.plantId = req.params.plantId;
     mainImageData.imageId = req.body.imageId;
     mainImageData.main = req.body.main;
@@ -26,11 +26,11 @@ var setMainImage = function(req, res){
     });
 };
 
-var getImagesData = function(req, res) {       
+let getImagesData = function(req, res) {       
     
     req.assert('plant_id', 'plantId should not be empty', req.params.plant_id).notEmpty();
 
-    var errors = req.validationErrors();
+    let errors = req.validationErrors();
     
     if (errors) {
         res.status(400).send('There have been validation errors: ' + util.inspect(errors));
@@ -39,7 +39,7 @@ var getImagesData = function(req, res) {
 
     imageService.getImagesFilesData(req.params.plant_id, function callback(error, files) {
 
-        for (var i = 0; i < files.length; i++) {
+        for (let i = 0; i < files.length; i++) {
             if(files[i] !== undefined){
                 files[i].url = 'http://localhost:3000' + files[i].url;
                 files[i].thumbnailUrl = 'http://localhost:3000' + files[i].thumbnailUrl;
@@ -55,15 +55,15 @@ var getImagesData = function(req, res) {
     });
 };
 
-var imagesProcess = function(req, res) {
+let imagesProcess = function(req, res) {
 
-    var plantId = req.params.plant_id;
-    var fileKey = Object.keys(req.files)[0];
-    var file = req.files[fileKey];
+    let plantId = req.params.plant_id;
+    let fileKey = Object.keys(req.files)[0];
+    let file = req.files[fileKey];
 
     req.assert('plant_id', 'plantId should not be empty', plantId).notEmpty();
 
-    var errors = req.validationErrors();
+    let errors = req.validationErrors();
     
     if (errors) {
         res.status(400).send('There have been validation errors: ' + util.inspect(errors));
@@ -79,13 +79,13 @@ var imagesProcess = function(req, res) {
     });
 };
 
-var deleteImage = function(req, res) {
+let deleteImage = function(req, res) {
 
-    var imageId = req.params.image_id;
+    let imageId = req.params.image_id;
 
     req.assert('image_id', 'ImageId should not be empty', imageId).notEmpty();
 
-    var errors = req.validationErrors();
+    let errors = req.validationErrors();
     
     if (errors) {
         res.status(400).send('There have been validation errors: ' + util.inspect(errors));
@@ -97,13 +97,13 @@ var deleteImage = function(req, res) {
     });
 };
 
-var getImageFiles = function(req, res) {       
+let getImageFiles = function(req, res) {       
     
     logger.info(' Trying to get all images from one plant with id ' + req.params.plant_id);
 
     req.assert('plant_id', 'plantId should not be empty', req.params.plant_id).notEmpty();
 
-    var errors = req.validationErrors();
+    let errors = req.validationErrors();
     
     if (errors) {
         res.status(400).send('There have been validation errors: ' + util.inspect(errors));

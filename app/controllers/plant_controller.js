@@ -1,31 +1,30 @@
 "use strict";
 
-var Plant = require('../models/plant'),
+let Plant = require('../models/plant'),
     Garden = require('../models/garden'),
     logger = require('../utils/logger'),
     imageService = require('../services/images_service'),
     plantService = require('../services/plant_service'),
     util = require('util'),
-    utilObject = require('../helpers/util_object'),
-    utilImage = require('../helpers/util_image');
+    utilObject = require('../helpers/util_object');
 
 /**
  * Create a plant
  * @param req request parameters
  * @param res response
  */
-var createPlant = function (req, res) {
+let createPlant = function (req, res) {
 
     //req.assert('gardenId', 'Invalid gardenId').notEmpty();
     req.assert('gardenId', 'gardenId should not be empty', req.body.gardenId).notEmpty();
 
-    var errors = req.validationErrors();
+    let errors = req.validationErrors();
     if (errors) {
         return res.status(400).send('There have been validation errors: ' + util.inspect(errors));
     }
 
-    var imagesData;
-    var plantName = req.body.name;
+    let imagesData;
+    let plantName = req.body.name;
 
     plantService.getPlantInfoByName(req.body.name, function (err, plant) {
 
@@ -102,7 +101,7 @@ var createPlant = function (req, res) {
  * @param req
  * @param res
  */
-var updatePlant = function (req, res) {
+let updatePlant = function (req, res) {
 
     logger.debug(' -------------------- Update a plant  -------------------- ');
 
@@ -117,7 +116,7 @@ var updatePlant = function (req, res) {
             return res.status(400).send(' The plant does not exist ');
         }
 
-        var oldFolderName = false;
+        let oldFolderName = false;
 
         //If the name of the plant(Model) changes, the folder's image path should be updated.
         if (plant.name !== req.body.name) {
@@ -204,7 +203,7 @@ var updatePlant = function (req, res) {
  * @param req
  * @param res
  */
-var deletePlant = function (req, res) {
+let deletePlant = function (req, res) {
 
     Plant.findById(req.params.plant_id, function (err, plant) {
 
@@ -225,9 +224,9 @@ var deletePlant = function (req, res) {
                 return res.status(404).send(err);
             }
 
-            var text = ' The plant with id ' + req.params.plant_id + ' was deleted. ';
+            let text = ' The plant with id ' + req.params.plant_id + ' was deleted. ';
             logger.debug(text);
-            var data = {
+            let data = {
                 message: text
             };
 
@@ -246,7 +245,7 @@ var deletePlant = function (req, res) {
  * @param req
  * @param res
  */
-var getPlant = function (req, res) {
+let getPlant = function (req, res) {
 
     logger.debug(' Get plant with id: ' + req.params.plant_id);
 
@@ -266,7 +265,7 @@ var getPlant = function (req, res) {
  * @param req
  * @param res
  */
-var getAll = function (req, res) {
+let getAll = function (req, res) {
     Plant.find(function (err, plants) {
         if (err) {
             return res.send(err);
@@ -282,7 +281,7 @@ var getAll = function (req, res) {
  * @param req
  * @param res
  */
-var getAllThePlantsForOneGarden = function (req, res) {
+let getAllThePlantsForOneGarden = function (req, res) {
 
     Plant.find({gardenId: req.body.gardenId}, function (err, plants) {
         if (err) {

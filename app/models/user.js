@@ -2,6 +2,7 @@ let Promise = require('bluebird'),
     mongoose = require('mongoose'),
     httpStatus = require('http-status'),
     APIError = require('../helpers/APIError'),
+    bcrypt = require('bcrypt'),
     bcryptPromise = require('../helpers/bcrypt-promise');
 
 let Schema = mongoose.Schema;
@@ -36,23 +37,13 @@ UserSchema.pre('save', function (next) {
             .then( result => {
                 return bcryptPromise.genHash(result.salt,result.password);
             })
+            .then( hash => {
+                user.password = hash;
+                return next(user);
+            })
             .catch(function(err) {
                 return next(err);
             });
-
-        /*
-        bcrypt.genSalt(10, function (err, salt) {
-            if (err) {
-                return next(err);
-            }
-            bcrypt.hash(user.password, salt, function (err, hash) {
-                if (err) {
-                    return next(err);
-                }
-                user.password = hash;
-                next();
-            });
-        }); */
 
     } else {
         return next();
@@ -138,5 +129,6 @@ UserSchema.statics = {
  * @typedef User
  */
 module.exports = mongoose.model('User', UserSchema);
+
 
 
